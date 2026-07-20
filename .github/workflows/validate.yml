@@ -1,0 +1,19 @@
+name: Validate Teacher Treasure
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JavaScript syntax
+        run: node --check app.js
+      - name: Validate deal data
+        run: python3 scripts/validate_deals.py

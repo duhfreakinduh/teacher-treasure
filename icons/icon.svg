@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Teacher Treasure app icon">
+  <rect width="512" height="512" rx="104" fill="#17324d"/>
+  <path d="M72 176 256 86l184 90-184 90L72 176Z" fill="#f0b429"/>
+  <path d="M130 216v116c0 52 62 94 126 94s126-42 126-94V216l-126 62-126-62Z" fill="#0f766e"/>
+  <path d="M440 178v132" stroke="#f0b429" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="440" cy="334" r="24" fill="#f0b429"/>
+  <text x="256" y="375" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="102" font-weight="800">TT</text>
+</svg>

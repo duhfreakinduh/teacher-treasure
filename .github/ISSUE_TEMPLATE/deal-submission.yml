@@ -1,0 +1,66 @@
+name: Submit a teacher deal
+about: Suggest a freebie, discount, giveaway, grant, or local educator resource
+labels: ["deal submission", "needs verification"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping educators save money. Please submit only legitimate offers and include an official source link.
+  - type: input
+    id: title
+    attributes:
+      label: Deal title
+      placeholder: Free classroom posters for educators
+    validations:
+      required: true
+  - type: input
+    id: organization
+    attributes:
+      label: Organization
+      placeholder: Organization or business name
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Offer type
+      options:
+        - Free
+        - Discount
+        - Giveaway
+        - Grant
+    validations:
+      required: true
+  - type: input
+    id: region
+    attributes:
+      label: Location or availability
+      placeholder: Nationwide, Online, Fort Worth TX, etc.
+    validations:
+      required: true
+  - type: input
+    id: expiration
+    attributes:
+      label: Expiration date
+      placeholder: YYYY-MM-DD or unknown
+  - type: input
+    id: source
+    attributes:
+      label: Official source URL
+      placeholder: https://...
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Eligibility and claim details
+      description: Explain who qualifies, what is included, and how to claim the offer.
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I checked that this offer appears on an official or trustworthy source.
+          required: true

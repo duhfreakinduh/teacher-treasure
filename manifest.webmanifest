@@ -1,0 +1,18 @@
+{
+  "name": "Teacher Treasure",
+  "short_name": "Treasure",
+  "description": "Discover and track teacher freebies, discounts, grants, and giveaways.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7fafc",
+  "theme_color": "#17324d",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
