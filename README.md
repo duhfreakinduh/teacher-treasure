@@ -1,77 +1,69 @@
 # Teacher Treasure
 
-A mobile-friendly, installable web app for discovering and tracking educator freebies, discounts, giveaways, grants, and local resources.
+**Hidden deals. Bigger classroom wins.**
 
-## What is included
+Teacher Treasure is a mobile-friendly, installable web app for finding verified educator freebies, discounts, technology offers, classroom resources, and Fort Worth-area benefits.
 
-- Search and filter teacher offers
-- Free, discount, giveaway, and grant categories
-- Online and local listings
-- Saved favorites stored on the device
-- Community deal submission form stored on the device
-- Deal alert preferences stored on the device
-- Live deal-scout search shortcuts using current keywords
-- GitHub issue form for community deal submissions
-- App icons for installable PWA support
-- Safety and verification reminders
-- Progressive Web App support
-- Zero dependencies and no build step
+## Live app
 
-## Important MVP note
+`https://duhfreakinduh.github.io/teacher-treasure/`
 
-The included listings are clearly marked demo records. Replace them with verified current offers before publicly promoting the app. Offers change frequently, so every listing should include an official source URL, a last-checked date, and an expiration date when known.
+## Release features
+
+- Verified listings linked directly to official sources
+- Visible last-checked dates, eligibility, deadlines, and savings labels
+- Search, category, offer-type, location, and expiration filters
+- Saved favorites stored privately on the device
+- Personal category watch list stored privately on the device
+- Community-added local deals with clear unverified labeling
+- GitHub issue forms for community submissions and outdated-deal reports
+- Share controls with clipboard fallback
+- Installable Progressive Web App support
+- Offline shell and cached deal data
+- Responsive layout and keyboard-accessible controls
+- Automated JavaScript and deal-data validation
+- Zero runtime dependencies and no build step
+
+## Data policy
+
+Every published seed listing must:
+
+1. Link to an official organization source, not a search-results page.
+2. Include an ISO `lastVerified` date.
+3. State eligibility and important limitations.
+4. Include a known expiration date when the official source provides one.
+5. Be removed or updated when the source no longer supports the claim.
+
+Offers can change without notice. Teacher Treasure is a directory, not a guarantee or endorsement.
 
 ## Run locally
 
-Because the app loads JSON with `fetch`, serve the folder through a local web server instead of opening `index.html` directly.
+The app loads JSON with `fetch`, so serve the folder through a local web server:
 
 ```bash
 python3 -m http.server 8080
 ```
 
-Then open `http://localhost:8080`.
+Open `http://localhost:8080`.
+
+## Validate
+
+```bash
+node --check app.js
+python3 scripts/validate_deals.py
+python3 -m json.tool data/deals.json >/dev/null
+python3 -m json.tool manifest.webmanifest >/dev/null
+```
 
 ## Publish with GitHub Pages
 
-1. Open **Settings → Pages**.
-2. Under **Build and deployment**, select **GitHub Actions**.
-3. The included workflow will publish the site.
+The included GitHub Actions workflow deploys pushes to `main`. In repository **Settings → Pages**, set the source to **GitHub Actions**.
 
-## Recommended Phase 2 architecture
+## Add or update a deal
 
-- Frontend: Next.js or the existing static PWA
-- Database/auth: Supabase
-- Deal ingestion: scheduled server functions using approved APIs, RSS feeds, newsletters, and manual moderator submissions
-- Notifications: Resend or SendGrid email alerts
-- Geography: city, ZIP code, state, and nationwide targeting
-- Moderation: pending, verified, expired, rejected, and reported statuses
-- Automation: daily expiration checks and source re-verification
+Edit `data/deals.json` and keep the existing schema. The validation workflow rejects missing fields, duplicate IDs or URLs, invalid dates, search-engine URLs, and verified records without a verification date.
 
-Do not scrape websites that prohibit automated access. Prefer official APIs, RSS feeds, affiliate feeds, newsletters, and community submissions.
-
-## Suggested data model
-
-```text
-Deal
-- id
-- title
-- organization
-- type
-- category
-- description
-- official_url
-- location_type
-- city
-- state
-- nationwide
-- eligibility
-- expiration_date
-- last_verified_at
-- verification_status
-- submitted_by
-- saves_count
-- report_count
-```
+Community members can also use the repository's **Submit a teacher deal** issue form.
 
 ## License
 
