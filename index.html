@@ -3,52 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Teacher Treasure helps educators discover and track freebies, discounts, grants, giveaways, and local classroom resources." />
+  <meta name="description" content="Teacher Treasure helps educators find verified freebies, discounts, grants, and local classroom resources." />
   <meta name="theme-color" content="#17324d" />
-  <title>Teacher Treasure | Freebies, Deals & Giveaways for Educators</title>
+  <meta property="og:title" content="Teacher Treasure" />
+  <meta property="og:description" content="Hidden deals. Bigger classroom wins." />
+  <meta property="og:type" content="website" />
+  <title>Teacher Treasure | Verified Deals for Educators</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icons/icon.svg" />
   <link rel="apple-touch-icon" href="icons/icon.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <a class="skip-link" href="#deals">Skip to deals</a>
+  <div id="connectionStatus" class="connection-status" role="status" hidden>You are offline. Saved pages and deals are still available.</div>
+
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Teacher Treasure home">
       <span class="brand-mark" aria-hidden="true">TT</span>
       <span><strong>Teacher Treasure</strong><small>Hidden deals. Bigger classroom wins.</small></span>
     </a>
     <nav class="header-actions" aria-label="Primary navigation">
-      <button class="btn btn-ghost" id="favoritesToggle" type="button">Saved <span id="favoriteCount">0</span></button>
-      <button class="btn btn-primary" id="openSubmit" type="button">+ Add a deal</button>
+      <button class="btn btn-ghost install-btn" id="installApp" type="button" hidden>Install</button>
+      <button class="btn btn-ghost" id="favoritesToggle" type="button" aria-pressed="false">Saved <span id="favoriteCount">0</span></button>
+      <button class="btn btn-primary" id="openSubmit" type="button">+ Add deal</button>
     </nav>
   </header>
 
   <main id="top">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">Your teacher deal treasure map</p>
-        <h1>Find hidden savings. Build brighter classrooms.</h1>
-        <p>Discover teacher discounts, free classroom supplies, giveaways, grants, meals, technology offers, and local Fort Worth resources—all in one place.</p>
+        <p class="eyebrow">Your educator savings map</p>
+        <h1>Spend less on the classroom. Keep more for your family.</h1>
+        <p>Search verified teacher freebies, educator discounts, technology offers, classroom resources, and Fort Worth-area benefits.</p>
         <div class="hero-stats" aria-label="Deal statistics">
-          <div><strong id="dealCount">0</strong><span>active listings</span></div>
-          <div><strong id="freeCount">0</strong><span>free offers</span></div>
-          <div><strong id="verifiedCount">0</strong><span>verified sources</span></div>
+          <div><strong id="dealCount">0</strong><span>active offers</span></div>
+          <div><strong id="freeCount">0</strong><span>free resources</span></div>
+          <div><strong id="verifiedCount">0</strong><span>official sources</span></div>
         </div>
       </div>
-      <aside class="alert-card">
-        <span class="alert-icon" aria-hidden="true">🔔</span>
+      <aside class="watch-card">
+        <span class="watch-icon" aria-hidden="true">★</span>
         <div>
-          <h2>Deal alerts</h2>
-          <p>Save your email and favorite categories on this device. Email delivery can be connected in Phase 2.</p>
+          <p class="eyebrow">Personal watch list</p>
+          <h2>Follow the categories you care about.</h2>
+          <p>Your choices stay private on this device. No email signup and no spam.</p>
         </div>
-        <button class="btn btn-light" id="openAlerts" type="button">Set preferences</button>
+        <button class="btn btn-light" id="openWatch" type="button">Choose categories</button>
       </aside>
     </section>
 
     <section class="search-panel" aria-label="Search and filters">
       <label class="search-field">
         <span class="sr-only">Search deals</span>
-        <input id="searchInput" type="search" placeholder="Search supplies, food, museums, software…" autocomplete="off" />
+        <input id="searchInput" type="search" placeholder="Search supplies, software, books, phone plans…" autocomplete="off" />
       </label>
       <label>
         <span>Category</span>
@@ -75,27 +83,29 @@
       <label>
         <span>Sort</span>
         <select id="sortFilter">
-          <option value="newest">Newest</option>
+          <option value="verified">Recently verified</option>
           <option value="ending">Ending soon</option>
-          <option value="popular">Most saved</option>
+          <option value="az">A–Z</option>
         </select>
       </label>
       <button class="btn btn-ghost" id="clearFilters" type="button">Clear</button>
+      <label class="check-control"><input id="showExpired" type="checkbox" /> <span>Show expired</span></label>
     </section>
 
-    <section class="content-grid">
+    <section class="content-grid" id="deals">
       <div>
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Fresh finds</p>
+            <p class="eyebrow">Verified finds</p>
             <h2 id="resultsTitle">Teacher deals</h2>
           </div>
           <p id="resultsCount" aria-live="polite"></p>
         </div>
-        <div id="dealGrid" class="deal-grid"></div>
+        <div id="watchSummary" class="watch-summary" hidden></div>
+        <div id="dealGrid" class="deal-grid" aria-live="polite"></div>
         <div id="emptyState" class="empty-state" hidden>
           <h3>No deals match those filters.</h3>
-          <p>Try clearing a filter or submit a deal for the community.</p>
+          <p>Clear a filter, change your search, or add a deal for review.</p>
           <button class="btn btn-primary" id="emptyAdd" type="button">Add a deal</button>
         </div>
       </div>
@@ -103,59 +113,71 @@
       <aside class="sidebar">
         <section class="panel">
           <p class="eyebrow">Deal scout</p>
-          <h2>Follow the treasure map</h2>
-          <p>Use your keywords to launch focused searches for current educator offers and giveaways.</p>
+          <h2>Search beyond the list</h2>
+          <p>Launch focused searches using your current keywords. Always confirm offers on an official source.</p>
           <div id="scoutLinks" class="scout-links"></div>
         </section>
         <section class="panel checklist">
-          <p class="eyebrow">Stay safe</p>
+          <p class="eyebrow">Trust checklist</p>
           <h2>Verify before claiming</h2>
           <ul>
-            <li>Confirm the offer on the organization’s official website.</li>
-            <li>Check expiration dates and educator eligibility.</li>
-            <li>Never pay a “processing fee” for a prize.</li>
-            <li>Avoid sharing school credentials on unfamiliar websites.</li>
+            <li>Use the official organization page linked on each card.</li>
+            <li>Check educator eligibility, exclusions, and deadlines.</li>
+            <li>Never pay a processing fee to receive a prize.</li>
+            <li>Do not share school passwords with discount sites.</li>
           </ul>
+        </section>
+        <section class="panel update-panel">
+          <p class="eyebrow">Data freshness</p>
+          <h2>Checked July 20, 2026</h2>
+          <p>Offers change. Use the report link when details no longer match the official source.</p>
         </section>
       </aside>
     </section>
   </main>
 
   <footer>
-    <p><strong>Teacher Treasure</strong> is a community-powered deal tracker. Offers can change without notice; verify details before claiming.</p>
+    <p><strong>Teacher Treasure</strong> is a community-powered directory. It is not affiliated with listed organizations. Verify all terms before claiming an offer.</p>
+    <p><a href="https://github.com/duhfreakinduh/teacher-treasure" target="_blank" rel="noopener noreferrer">View the open-source project</a></p>
   </footer>
 
   <dialog id="submitDialog">
     <form id="dealForm" method="dialog" class="dialog-form">
       <div class="dialog-heading">
         <div><p class="eyebrow">Community submission</p><h2>Add a teacher deal</h2></div>
-        <button class="icon-btn close-dialog" type="button" aria-label="Close">×</button>
+        <button class="icon-btn close-submit" type="button" aria-label="Close">×</button>
       </div>
+      <p class="form-note">This saves a personal copy on your device. Use “Submit for community review” afterward to suggest it for everyone.</p>
       <div class="form-grid">
         <label class="full"><span>Deal title</span><input name="title" required maxlength="90" placeholder="Free classroom posters" /></label>
         <label><span>Organization</span><input name="organization" required maxlength="60" placeholder="Organization name" /></label>
         <label><span>Offer type</span><select name="type" required><option>Free</option><option>Discount</option><option>Giveaway</option><option>Grant</option></select></label>
-        <label><span>Category</span><select name="category" required><option>Classroom Supplies</option><option>Food & Drink</option><option>Technology</option><option>Books</option><option>Entertainment</option><option>Travel</option><option>Professional Development</option><option>Grants</option><option>Other</option></select></label>
+        <label><span>Category</span><select name="category" required><option>Classroom Supplies</option><option>Technology</option><option>Books & Library</option><option>Food & Drink</option><option>Entertainment</option><option>Wellness</option><option>Professional Development</option><option>Communications</option><option>Other</option></select></label>
         <label><span>Availability</span><select name="locationType" required><option>Online</option><option>Local</option></select></label>
         <label><span>City or region</span><input name="region" maxlength="60" placeholder="Fort Worth, TX or Nationwide" /></label>
         <label><span>Expiration</span><input name="expires" type="date" /></label>
         <label class="full"><span>Official link</span><input name="url" type="url" required placeholder="https://..." /></label>
-        <label class="full"><span>Details</span><textarea name="description" rows="4" required maxlength="350" placeholder="Who qualifies, what is included, and how to claim it."></textarea></label>
+        <label class="full"><span>Eligibility</span><input name="eligibility" required maxlength="180" placeholder="Who qualifies and what proof is needed" /></label>
+        <label class="full"><span>Details</span><textarea name="description" rows="4" required maxlength="350" placeholder="What is included and how to claim it."></textarea></label>
       </div>
-      <div class="dialog-actions"><button class="btn btn-ghost close-dialog" type="button">Cancel</button><button class="btn btn-primary" value="submit" type="submit">Save deal</button></div>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost close-submit" type="button">Cancel</button>
+        <button class="btn btn-primary" value="submit" type="submit">Save on this device</button>
+      </div>
+      <a class="community-submit-link" href="https://github.com/duhfreakinduh/teacher-treasure/issues/new?template=deal-submission.yml" target="_blank" rel="noopener noreferrer">Submit for community review ↗</a>
     </form>
   </dialog>
 
-  <dialog id="alertsDialog">
-    <form id="alertsForm" method="dialog" class="dialog-form">
+  <dialog id="watchDialog">
+    <form id="watchForm" method="dialog" class="dialog-form">
       <div class="dialog-heading">
-        <div><p class="eyebrow">Personalize</p><h2>Deal alert preferences</h2></div>
-        <button class="icon-btn close-alerts" type="button" aria-label="Close">×</button>
+        <div><p class="eyebrow">Personalize</p><h2>Watch categories</h2></div>
+        <button class="icon-btn close-watch" type="button" aria-label="Close">×</button>
       </div>
-      <label><span>Email</span><input name="email" type="email" placeholder="teacher@example.com" /></label>
-      <fieldset><legend>Favorite categories</legend><div id="alertCategories" class="check-grid"></div></fieldset>
-      <p class="form-note">This MVP stores preferences only on this device. Automated email alerts are planned for the hosted version.</p>
-      <div class="dialog-actions"><button class="btn btn-ghost close-alerts" type="button">Cancel</button><button class="btn btn-primary" type="submit">Save preferences</button></div>
+      <p class="form-note">Select categories to highlight. Preferences are stored only in this browser.</p>
+      <fieldset><legend>Categories</legend><div id="watchCategories" class="check-grid"></div></fieldset>
+      <label class="toggle-row"><input name="watchOnly" type="checkbox" /> Show only watched categories when the app opens</label>
+      <div class="dialog-actions"><button class="btn btn-ghost close-watch" type="button">Cancel</button><button class="btn btn-primary" type="submit">Save watch list</button></div>
     </form>
   </dialog>
 
