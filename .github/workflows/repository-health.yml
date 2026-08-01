@@ -1,0 +1,109 @@
+name: Repository health
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            echo "Checking $file"
+            node --check "$file"
+          done < <(find . -type f -name '*.js' \
+            -not -path './.git/*' -not -path './node_modules/*' \
+            -not -path './vendor/*' -not -path './dist/*' \
+            -not -path './build/*' -print0)
+      - name: Check Python syntax
+        run: python3 -m compileall -q -x '(^|/)(\.git|node_modules|vendor|dist|build)/' .
+      - name: Validate JSON and HTML references
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          from collections import Counter
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import unquote, urlsplit
+
+          root = Path('.').resolve()
+          skip = {'.git', 'node_modules', 'vendor', 'dist', 'build'}
+          errors = []
+
+          def files():
+              for path in root.rglob('*'):
+                  if path.is_file() and not any(part in skip for part in path.parts):
+                      yield path
+
+          for path in files():
+              if path.suffix.lower() in {'.json', '.webmanifest'}:
+                  try:
+                      json.loads(path.read_text(encoding='utf-8'))
+                  except Exception as exc:
+                      errors.append(f'{path.relative_to(root)}: invalid JSON ({exc})')
+
+          class Parser(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.refs, self.ids = [], []
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if attrs.get('id'):
+                      self.ids.append(attrs['id'])
+                  for key in ('src', 'href', 'poster'):
+                      if attrs.get(key):
+                          self.refs.append(attrs[key].strip())
+
+          ignored = {'http', 'https', 'mailto', 'tel', 'data', 'blob', 'javascript'}
+          for html in (p for p in files() if p.suffix.lower() in {'.html', '.htm'}):
+              parser = Parser()
+              try:
+                  parser.feed(html.read_text(encoding='utf-8'))
+              except Exception as exc:
+                  errors.append(f'{html.relative_to(root)}: HTML parse failed ({exc})')
+                  continue
+              duplicates = sorted(k for k, count in Counter(parser.ids).items() if count > 1)
+              if duplicates:
+                  errors.append(f'{html.relative_to(root)}: duplicate ids: {", ".join(duplicates)}')
+              for raw in parser.refs:
+                  if not raw or raw.startswith(('#', '//')) or '{' in raw or '}' in raw:
+                      continue
+                  parsed = urlsplit(raw)
+                  if parsed.scheme.lower() in ignored:
+                      continue
+                  clean = unquote(parsed.path)
+                  if not clean or clean == '/':
+                      continue
+                  target = root / clean.lstrip('/') if clean.startswith('/') else html.parent / clean
+                  if not target.resolve().exists():
+                      errors.append(f'{html.relative_to(root)}: missing local reference {raw!r}')
+
+          if errors:
+              print('\n'.join(f'ERROR: {error}' for error in errors), file=sys.stderr)
+              raise SystemExit(1)
+          print('Repository health checks passed.')
+          PY
+      - name: Run package checks when available
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -f package.json ]] || { echo 'No package.json found.'; exit 0; }
+          if [[ -f package-lock.json ]]; then
+            npm ci --ignore-scripts
+          else
+            npm install --ignore-scripts --package-lock=false
+          fi
+          npm test --if-present
+          npm run build --if-present
