@@ -1,0 +1,19 @@
+{
+  "name": "Fact Quest — Multiplication Adventure",
+  "short_name": "Fact Quest",
+  "description": "A fun multiplication-facts learning game for kids.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f1024",
+  "theme_color": "#6d28d9",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
