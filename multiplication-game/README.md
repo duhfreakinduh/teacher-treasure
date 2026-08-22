@@ -1,6 +1,6 @@
 ---
 title: Fact Quest
-e moji: ✖️
+emoji: ✖️
 colorFrom: purple
 colorTo: indigo
 sdk: static
