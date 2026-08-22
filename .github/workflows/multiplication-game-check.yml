@@ -1,0 +1,31 @@
+name: Fact Quest checks
+
+on:
+  push:
+    branches: [multiplication-game-app]
+    paths:
+      - 'multiplication-game/**'
+      - '.github/workflows/multiplication-game-check.yml'
+  pull_request:
+    paths:
+      - 'multiplication-game/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: |
+          node --check multiplication-game/app.js
+          node --check multiplication-game/sw.js
+      - name: Validate web manifest JSON
+        run: python -m json.tool multiplication-game/manifest.webmanifest >/dev/null
+      - name: Verify required app files
+        run: |
+          test -s multiplication-game/index.html
+          test -s multiplication-game/style.css
+          test -s multiplication-game/app.js
+          test -s multiplication-game/manifest.webmanifest
+          test -s multiplication-game/sw.js
+          test -s multiplication-game/icon.svg
