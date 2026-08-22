@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#6d28d9" />
+  <meta name="description" content="Fact Quest — a fun multiplication-facts learning game for kids." />
+  <title>Fact Quest — Multiplication Adventure</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <button id="homeBtn" class="icon-btn hidden" aria-label="Go home">⌂</button>
+      <div class="brand">
+        <span class="brand-mark">✖</span>
+        <div>
+          <strong>Fact Quest</strong>
+          <small>Multiplication Adventure</small>
+        </div>
+      </div>
+      <button id="soundBtn" class="icon-btn" aria-label="Toggle sound">🔊</button>
+    </header>
+
+    <main>
+      <section id="welcomeScreen" class="screen active">
+        <div class="hero-card">
+          <div class="hero-art" aria-hidden="true">🏰</div>
+          <p class="eyebrow">READY, HERO?</p>
+          <h1>Turn multiplication into a game.</h1>
+          <p>Build streaks, beat bosses, earn treasure, and master facts from ×1 to ×12.</p>
+          <label class="field-label" for="playerName">Player name</label>
+          <input id="playerName" class="name-input" maxlength="18" placeholder="Hero name" autocomplete="off" />
+          <button id="startBtn" class="primary-btn">Start Adventure</button>
+        </div>
+      </section>
+
+      <section id="homeScreen" class="screen">
+        <div class="player-strip">
+          <div>
+            <p class="muted">Welcome back</p>
+            <h2 id="playerGreeting">Hero</h2>
+          </div>
+          <div class="level-pill">
+            <span id="levelBadge">Lv 1</span>
+            <strong id="xpText">0 XP</strong>
+          </div>
+        </div>
+
+        <div class="xp-track" aria-label="Experience progress">
+          <div id="xpFill" class="xp-fill"></div>
+        </div>
+
+        <section class="daily-card">
+          <div>
+            <p class="eyebrow">DAILY QUEST</p>
+            <h3>Treasure Chest</h3>
+            <p>Answer 12 mixed facts and earn a bonus chest.</p>
+          </div>
+          <button id="dailyBtn" class="small-btn">Play</button>
+        </section>
+
+        <h3 class="section-title">Choose a game</h3>
+        <div class="mode-grid">
+          <button class="mode-card purple" data-mode="adventure">
+            <span class="mode-icon">🗺️</span>
+            <strong>Adventure</strong>
+            <small>10 questions • hearts</small>
+          </button>
+          <button class="mode-card orange" data-mode="speed">
+            <span class="mode-icon">⚡</span>
+            <strong>Speed Run</strong>
+            <small>60 seconds • go fast</small>
+          </button>
+          <button class="mode-card red" data-mode="boss">
+            <span class="mode-icon">🐉</span>
+            <strong>Boss Battle</strong>
+            <small>Defeat the dragon</small>
+          </button>
+          <button class="mode-card green" data-mode="practice">
+            <span class="mode-icon">🎯</span>
+            <strong>Practice</strong>
+            <small>No pressure • learn</small>
+          </button>
+        </div>
+
+        <div class="home-actions">
+          <button id="factsBtn" class="secondary-btn">Choose Facts</button>
+          <button id="progressBtn" class="secondary-btn">My Progress</button>
+        </div>
+      </section>
+
+      <section id="factsScreen" class="screen">
+        <div class="screen-heading">
+          <p class="eyebrow">TRAINING SET</p>
+          <h2>Which facts should we practice?</h2>
+          <p>Pick one or more. Harder facts will appear a little more often.</p>
+        </div>
+        <div id="factPicker" class="fact-picker" aria-label="Choose multiplication fact families"></div>
+        <div class="picker-actions">
+          <button id="selectAllBtn" class="secondary-btn">Select All</button>
+          <button id="saveFactsBtn" class="primary-btn">Save Facts</button>
+        </div>
+      </section>
+
+      <section id="gameScreen" class="screen">
+        <div class="game-hud">
+          <div class="hud-item"><span>Score</span><strong id="scoreText">0</strong></div>
+          <div class="hud-item"><span>Streak</span><strong id="streakText">0 🔥</strong></div>
+          <div class="hud-item"><span id="modeStatLabel">Hearts</span><strong id="modeStatText">♥♥♥</strong></div>
+        </div>
+
+        <div id="bossWrap" class="boss-wrap hidden">
+          <div class="boss-row"><span>🐉 Dragon</span><strong id="bossHpText">100 HP</strong></div>
+          <div class="boss-track"><div id="bossHpFill" class="boss-fill"></div></div>
+        </div>
+
+        <div id="timerWrap" class="timer-wrap hidden">
+          <div id="timerFill" class="timer-fill"></div>
+        </div>
+
+        <div class="question-card">
+          <div id="questionCount" class="question-count">Question 1 of 10</div>
+          <div id="questionText" class="question-text">6 × 7 = ?</div>
+          <div id="hintText" class="hint-text hidden"></div>
+          <div id="answersGrid" class="answers-grid"></div>
+          <button id="hintBtn" class="hint-btn hidden">Need a hint?</button>
+        </div>
+
+        <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+      </section>
+
+      <section id="resultsScreen" class="screen">
+        <div class="results-card">
+          <div id="resultIcon" class="result-icon">🏆</div>
+          <p id="resultEyebrow" class="eyebrow">QUEST COMPLETE</p>
+          <h2 id="resultTitle">Great work!</h2>
+          <p id="resultMessage">You finished the round.</p>
+          <div class="result-stats">
+            <div><span>Score</span><strong id="finalScore">0</strong></div>
+            <div><span>Correct</span><strong id="finalCorrect">0/0</strong></div>
+            <div><span>Best streak</span><strong id="finalStreak">0</strong></div>
+            <div><span>XP earned</span><strong id="finalXp">+0</strong></div>
+          </div>
+          <div id="newBadge" class="new-badge hidden"></div>
+          <button id="playAgainBtn" class="primary-btn">Play Again</button>
+          <button id="resultsHomeBtn" class="secondary-btn">Back Home</button>
+        </div>
+      </section>
+
+      <section id="progressScreen" class="screen">
+        <div class="screen-heading">
+          <p class="eyebrow">HERO REPORT</p>
+          <h2>Your fact mastery</h2>
+          <p>Stars grow as accuracy improves. Keep practicing the low-star facts.</p>
+        </div>
+        <div id="masteryGrid" class="mastery-grid"></div>
+        <div class="badges-panel">
+          <h3>Badges</h3>
+          <div id="badgesGrid" class="badges-grid"></div>
+        </div>
+        <button id="progressHomeBtn" class="primary-btn">Back Home</button>
+        <button id="resetBtn" class="danger-link">Reset saved progress</button>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="confettiLayer" class="confetti-layer" aria-hidden="true"></div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
