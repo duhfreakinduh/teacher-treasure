@@ -2,7 +2,7 @@ name: Fact Quest checks
 
 on:
   push:
-    branches: [multiplication-game-app]
+    branches: [main, multiplication-game-app]
     paths:
       - 'multiplication-game/**'
       - '.github/workflows/multiplication-game-check.yml'
