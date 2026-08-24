@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Teacher Treasure helps educators find verified freebies, discounts, grants, and local classroom resources." />
+  <meta name="description" content="Teacher Treasure helps educators find verified freebies, discounts, grants, local classroom resources, and AI-ranked matches." />
   <meta name="theme-color" content="#17324d" />
   <meta property="og:title" content="Teacher Treasure" />
   <meta property="og:description" content="Hidden deals. Bigger classroom wins." />
@@ -13,6 +13,7 @@
   <link rel="icon" href="icons/icon.svg" />
   <link rel="apple-touch-icon" href="icons/icon.svg" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="ai-scout.css" />
 </head>
 <body>
   <a class="skip-link" href="#deals">Skip to deals</a>
@@ -129,8 +130,8 @@
         </section>
         <section class="panel update-panel">
           <p class="eyebrow">Data freshness</p>
-          <h2>Checked July 20, 2026</h2>
-          <p>Offers change. Use the report link when details no longer match the official source.</p>
+          <h2>Loading verification dates…</h2>
+          <p>A daily repository monitor checks for stale verification dates, expirations, and official-link problems.</p>
         </section>
       </aside>
     </section>
@@ -183,5 +184,6 @@
 
   <div id="toast" role="status" aria-live="polite"></div>
   <script src="app.js" defer></script>
+  <script src="ai-scout.js?v=1" defer></script>
 </body>
 </html>
