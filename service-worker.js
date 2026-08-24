@@ -1,9 +1,11 @@
-const CACHE = 'teacher-treasure-v3';
+const CACHE = 'teacher-treasure-v4';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
+  './ai-scout.css',
   './app.js',
+  './ai-scout.js',
   './data/deals.json',
   './manifest.webmanifest',
   './icons/icon.svg'
